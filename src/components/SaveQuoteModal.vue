@@ -8,6 +8,18 @@
             <BaseLabel>Last Name</BaseLabel>
             <InputText v-model="formData.lastName"></InputText>
         </div>
+        <div class="label-input">
+            <BaseLabel>Email</BaseLabel>
+            <InputText v-model="formData.email"></InputText>
+        </div>
+        <div class="label-input">
+            <BaseLabel>Phone Number</BaseLabel>
+            <InputText v-model="formData.phoneNumber"></InputText>
+        </div>
+        <div class="label-input">
+            <BaseLabel>User ID</BaseLabel>
+            <InputText v-model="formData.userID"></InputText>
+        </div>
         <div class="actions">
             <Button
                 label="Cancel"
@@ -28,14 +40,20 @@ import { inject } from "vue";
 interface FormData {
     firstName: string;
     lastName: string;
+    email: string;
+    phoneNumber: string;
+    userID?: string;
 }
 const dialogRef = inject("dialogRef");
 const emit = defineEmits<{
     (e: "saveQuote", formData: FormData): void;
 }>();
-const formData = reactive({
-    firstName: "",
-    lastName: "",
+const formData = reactive<FormData>({
+    firstName: "matt",
+    lastName: "smith",
+    email: "matt@test.com",
+    phoneNumber: "1234567890",
+    userID: "15",
 });
 
 function saveInfo() {

@@ -233,6 +233,14 @@ async function saveQuotes(borrowerInfo: any): Promise<{
                 rateLongDesc: "test long",
                 borFirstName: borrowerInfo.firstName,
                 borLastName: borrowerInfo.lastName,
+                borPhoneNumber: borrowerInfo.phoneNumber,
+                borEmailAddress: borrowerInfo.email,
+                loanContactList: [
+                    {
+                        contactType: "borrower",
+                        contactIdentifier: borrowerInfo.userID,
+                    },
+                ],
                 quoteRequestParams: {
                     propertyValueAmt: formData.propertyValueAmt,
                     requestingLoanAmt: formData.requestingLoanAmt,

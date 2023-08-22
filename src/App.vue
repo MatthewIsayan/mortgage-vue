@@ -5,6 +5,10 @@ const items = [
         label: "Get Quote",
         to: { name: "GetQuote" },
     },
+    {
+        label: "Dashboard",
+        to: { name: "Dashboard" },
+    },
 ];
 </script>
 

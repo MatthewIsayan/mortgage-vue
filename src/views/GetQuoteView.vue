@@ -101,6 +101,7 @@
             <QuoteResultTable :quote-results="responseData" />
         </div>
     </div>
+    <Toast />
     <DynamicDialog />
 </template>
 
@@ -111,6 +112,9 @@ import QuoteResult from "@/components/QuoteResult.vue";
 import QuoteResultTable from "@/components/QuoteResultTable.vue";
 import { useDialog } from "primevue/usedialog";
 import SaveQuoteModal from "@/components/SaveQuoteModal.vue";
+import { useToast } from "primevue/usetoast";
+
+const toast = useToast();
 const dialog = useDialog();
 const loading = ref(false);
 const saveQuotesLoading = ref(false);
@@ -186,8 +190,18 @@ function openModal() {
         },
         emits: {
             onSaveQuote: async (formData: any) => {
-                await saveQuotes(formData);
+                const toastMessage = await saveQuotes(formData);
                 dialogInstance.close();
+                console.log(toastMessage);
+                toast.add({
+                    severity: toastMessage.severity as "error" | "success",
+                    summary:
+                        toastMessage.severity === "error"
+                            ? "Something Went Wrong"
+                            : "Quotes Saved",
+                    detail: toastMessage.message,
+                    life: 3000,
+                });
             },
         },
         props: {
@@ -203,9 +217,12 @@ function openModal() {
         },
     });
 }
-async function saveQuotes(borrowerInfo: any) {
+async function saveQuotes(borrowerInfo: any): Promise<{
+    message: string;
+    severity: string;
+}> {
     saveQuotesLoading.value = true;
-    return new Promise((resolve, reject) =>
+    return new Promise((resolve) =>
         fetch(import.meta.env.VITE_API_URL + "/rate/savepricequote", {
             method: "POST",
             headers: {
@@ -229,15 +246,26 @@ async function saveQuotes(borrowerInfo: any) {
             }),
         })
             .then((response) => {
-                console.log(response);
+                if (response.status !== 200) {
+                    resolve({
+                        message: "Failed to save quotes.",
+                        severity: "error",
+                    });
+                }
+                resolve({
+                    message: "Quotes saved successfully.",
+                    severity: "success",
+                });
             })
             .catch((error) => {
                 console.log(error);
-                reject("Failed to save quotes.");
+                resolve({
+                    message: "Failed to save quotes.",
+                    severity: "error",
+                });
             })
             .finally(() => {
                 saveQuotesLoading.value = false;
-                resolve("Quotes saved successfully.");
             })
     );
 }

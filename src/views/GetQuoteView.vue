@@ -233,6 +233,7 @@ async function saveQuotes(borrowerInfo: any) {
             })
             .catch((error) => {
                 console.log(error);
+                reject("Failed to save quotes.");
             })
             .finally(() => {
                 saveQuotesLoading.value = false;

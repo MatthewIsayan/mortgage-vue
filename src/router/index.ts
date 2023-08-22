@@ -13,6 +13,11 @@ const router = createRouter({
             name: "GetQuote",
             component: () => import("../views/GetQuoteView.vue"),
         },
+        {
+            path: "/dashboard",
+            name: "Dashboard",
+            component: () => import("../views/LoanOfficerDashboardView.vue"),
+        },
     ],
 });
 

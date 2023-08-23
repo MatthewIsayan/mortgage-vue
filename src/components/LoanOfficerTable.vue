@@ -11,7 +11,7 @@
         stripedRows
     >
         <Column field="scenarioIdentifier" header="ID" sortable> </Column>
-        <Column field="rateShortDesc" header="Rate Name"> </Column>
+        <Column field="rateShortDesc" header="Rate"> </Column>
 
         <Column header="Borrower">
             <template #body="bodyProps">
@@ -27,7 +27,6 @@
 <script setup lang="ts">
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
-import router from "@/router";
 
 interface Scenario {
     scenarioIdentifier: string;

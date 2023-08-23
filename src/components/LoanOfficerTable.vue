@@ -8,6 +8,7 @@
         tableStyle="min-width: 50rem"
         sortField="scenarioIdentifier"
         :sortOrder="1"
+        stripedRows
     >
         <Column field="scenarioIdentifier" header="ID" sortable> </Column>
         <Column field="rateShortDesc" header="Rate Name"> </Column>
@@ -26,6 +27,7 @@
 <script setup lang="ts">
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
+import router from "@/router";
 
 interface Scenario {
     scenarioIdentifier: string;
@@ -40,6 +42,13 @@ interface DashboardTableProps {
     scenarios: Scenario[];
 }
 const props = defineProps<DashboardTableProps>();
+
+// function onRowClick(e: any) {
+//     router.push({
+//         name: "Scenario",
+//         params: { id: e.data.scenarioIdentifier },
+//     });
+// }
 </script>
 
 <style scoped>

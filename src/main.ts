@@ -7,6 +7,7 @@ import router from "./router";
 import PrimeVue from "primevue/config";
 
 import Button from "primevue/button";
+import SplitButton from "primevue/splitbutton";
 import InputNumber from "primevue/inputnumber";
 import Dropdown from "primevue/dropdown";
 import Card from "primevue/card";
@@ -31,6 +32,7 @@ app.use(DialogService);
 app.use(ToastService);
 
 app.component("Button", Button);
+app.component("SplitButton", SplitButton);
 app.component("InputNumber", InputNumber);
 app.component("Dropdown", Dropdown);
 app.component("Card", Card);

@@ -6,8 +6,10 @@
         :totalRecords="scenarios.length"
         :value="scenarios"
         tableStyle="min-width: 50rem"
+        sortField="scenarioIdentifier"
+        :sortOrder="1"
     >
-        <Column field="scenarioIdentifier" header="ID"> </Column>
+        <Column field="scenarioIdentifier" header="ID" sortable> </Column>
         <Column field="rateShortDesc" header="Rate Name"> </Column>
 
         <Column header="Borrower">
@@ -16,6 +18,8 @@
                 {{ bodyProps.data.borLastName }}
             </template>
         </Column>
+        <Column field="borPhoneNumber" header="Phone Number"> </Column>
+        <Column field="borEmailAddress" header="Email"> </Column>
     </DataTable>
 </template>
 

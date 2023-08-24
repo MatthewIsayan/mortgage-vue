@@ -59,6 +59,8 @@ function getScenarioDetails() {
     })
         .then((response) => response.json())
         .then((data: any) => {
+            data = data.productPricingScneario;
+            console.log(data);
             scenarioDetails.borFirstName = data.borFirstName;
             scenarioDetails.borLastName = data.borLastName;
             scenarioDetails.borEmailAddress = data.borEmailAddress;

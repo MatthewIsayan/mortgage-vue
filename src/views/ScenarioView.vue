@@ -1,7 +1,8 @@
 <template>
     <div>
-        <h2>Scenario Details</h2>
+        <h1>Scenario ID: {{ route.params.id as string }}</h1>
         <template v-if="!loading">
+            <h2>Borrower Info</h2>
             <BorrowerInfoCard
                 v-if="scenarioDetails.borFirstName"
                 :scenario-identifier="(route.params.id as string)"
@@ -10,16 +11,17 @@
                 :email="scenarioDetails.borEmailAddress"
                 :phone-number="scenarioDetails.borPhoneNumber"
                 :rate-long-desc="scenarioDetails.rateLongDesc"
+                style="margin-bottom: 2rem"
             />
+            <h2>Quotes Requested</h2>
             <QuoteResultTable
                 v-if="
                     scenarioDetails.quoteResultList &&
                     scenarioDetails.quoteResultList.length > 0
                 "
                 :quote-results="scenarioDetails.quoteResultList"
+                style="max-width: 800px"
             ></QuoteResultTable>
-
-            <Button @click="console.log(scenarioDetails)">Log</Button>
         </template>
         <template v-else>
             <!-- Loading indicator or message -->

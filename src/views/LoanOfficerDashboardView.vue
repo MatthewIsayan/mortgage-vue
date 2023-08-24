@@ -1,5 +1,8 @@
 <template>
     <h2>Loan Officer Dashboard</h2>
+    <p style="color: var(--text-color-secondary)">
+        Select a row for more details
+    </p>
     <div class="table-container">
         <LoanOfficerTable :scenarios="scenarios" />
     </div>

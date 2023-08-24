@@ -108,7 +108,6 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
 import * as MockResponse from "@/mock-data/QuoteResponse.json";
-import QuoteResult from "@/components/QuoteResult.vue";
 import QuoteResultTable from "@/components/QuoteResultTable.vue";
 import { useDialog } from "primevue/usedialog";
 import SaveQuoteModal from "@/components/SaveQuoteModal.vue";

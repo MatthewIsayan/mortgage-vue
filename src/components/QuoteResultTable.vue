@@ -7,27 +7,55 @@
         :value="quoteResults"
         tableStyle="min-width: 50rem"
     >
-        <Column field="productName" header="Product Name"> </Column>
-        <Column field="" header="Rate (%)">
+        <Column field="productName" header="Product Name">
+            <template
+                #body="bodyProps"
+                v-if="hasNonNullValues(quoteResults, 'productName')"
+            >
+                {{ bodyProps.data.productName }}
+            </template>
+            <template v-else #body> Generic Product </template>
+        </Column>
+
+        <Column
+            v-if="hasNonNullValues(quoteResults, 'ratePct')"
+            field="ratePct"
+            header="Rate (%)"
+        >
             <template #body="bodyProps">
                 {{ bodyProps.data.ratePct.toFixed(2) }}
             </template>
         </Column>
-        <Column field="aprPct" header="APR (%)">
+
+        <Column
+            v-if="hasNonNullValues(quoteResults, 'aprPct')"
+            field="aprPct"
+            header="APR (%)"
+        >
             <template #body="bodyProps">
                 {{ bodyProps.data.aprPct.toFixed(2) }}
-            </template></Column
+            </template>
+        </Column>
+
+        <Column
+            v-if="hasNonNullValues(quoteResults, 'estimateMoPayment')"
+            field="estimateMoPayment"
+            header="Monthly Payment"
         >
-        <Column field="estimateMoPayment" header="Monthly Payment">
             <template #body="bodyProps">
                 ${{ bodyProps.data.estimateMoPayment.toFixed(2) }}
-            </template></Column
+            </template>
+        </Column>
+
+        <Column
+            v-if="hasNonNullValues(quoteResults, 'feesAmt')"
+            field="feesAmt"
+            header="Fees Amount"
         >
-        <Column field="feesAmt" header="Fees Amount">
             <template #body="bodyProps">
                 ${{ bodyProps.data.feesAmt.toFixed(2) }}
-            </template></Column
-        >
+            </template>
+        </Column>
     </DataTable>
 </template>
 
@@ -46,6 +74,10 @@ interface QuoteResultTableProps {
     quoteResults: QuoteResult[];
 }
 const props = defineProps<QuoteResultTableProps>();
+
+function hasNonNullValues(dataArray: any[], field: string) {
+    return dataArray.some((item) => item[field] !== null);
+}
 </script>
 
 <style scoped>

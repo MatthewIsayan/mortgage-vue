@@ -39,10 +39,10 @@ interface Scenario {
     borPhoneNumber: string;
     borEmailAddress: string;
 }
-interface DashboardTableProps {
+interface ScenarioTableProps {
     scenarios: Scenario[];
 }
-const props = defineProps<DashboardTableProps>();
+const props = defineProps<ScenarioTableProps>();
 
 function onRowClick(e: any) {
     router.push({

@@ -1,39 +1,48 @@
 <script setup lang="ts">
 import Menubar from "primevue/menubar";
-import router from "./router";
 import { computed, reactive, ref, watch } from "vue";
 import { useAuthStore } from "./stores/auth";
-const adminItems = [
-    {
-        label: "Get Quote",
-        to: { name: "GetQuote" },
-    },
-    {
-        label: "Dashboard",
-        to: { name: "Dashboard" },
-    },
-];
-const borrowerItems = [
-    {
-        label: "Get Quote",
-        to: { name: "GetQuote" },
-    },
-];
+import { Permission, getPermissionsForRole, hasPermission } from "@/utils/Auth";
+import { useRouter } from "vue-router";
 
-const loanOfficerItems = [
-    {
-        label: "Dashboard",
-        to: { name: "Dashboard" },
-    },
-];
-
+const router = useRouter();
 const auth = useAuthStore();
 
+const navItems = computed(() => {
+    const userRole = auth.user.role;
+
+    // Create an array to store the navigation items
+    let items: any[] = [];
+
+    // Loop through your routes and filter based on user's permissions
+    router.getRoutes().forEach((route) => {
+        const requiredPermission = route.meta.requiredPermission;
+
+        // Check if the user has permission to access the route
+        if (
+            (!requiredPermission ||
+                hasPermission(userRole, requiredPermission as Permission)) &&
+            route.meta.label
+        ) {
+            items.push({
+                label: route.meta.label,
+                to: { name: route.name },
+            });
+        }
+    });
+
+    return items;
+});
 function signOutUser() {
     auth.signOut();
     router.push({ name: "Login" });
 }
-const userLabel = computed(() => `Welcome, ${auth.userID}`);
+const userLabel = computed(
+    () =>
+        `Welcome, ${auth.user.role} ${
+            auth.user.name === "Guest" ? "" : auth.user.name
+        }`
+);
 
 const userActions = [
     {
@@ -47,12 +56,7 @@ const userActions = [
 </script>
 
 <template>
-    <Menubar
-        :model="
-            auth.userID === 'Loan Officer' ? loanOfficerItems : borrowerItems
-        "
-        v-if="auth.isSignedIn"
-    >
+    <Menubar :model="navItems" v-if="auth.isSignedIn">
         <template #start>
             <h1 style="margin-left: 1rem; margin-right: 1rem">Loan App</h1>
         </template>

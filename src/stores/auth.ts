@@ -1,21 +1,39 @@
-import { ref, computed } from "vue";
+import { ref, computed, reactive } from "vue";
 import { defineStore } from "pinia";
-
+import type { User } from "@/utils/Auth";
+import { Role } from "@/utils/Auth";
 export const useAuthStore = defineStore("auth", () => {
     const storedUserID = sessionStorage.getItem("userID");
-    const userID = ref(storedUserID);
+    const storedUserRole = sessionStorage.getItem("userRole");
+    const storedUserName = sessionStorage.getItem("userName");
 
-    function setUserID(newUserID: string) {
-        sessionStorage.setItem("userID", newUserID);
-        userID.value = newUserID;
+    const user = reactive<User>({
+        id: storedUserID ? storedUserID : "0",
+        name: storedUserName ? storedUserName : "Guest",
+        role: storedUserRole ? (storedUserRole as Role) : Role.None,
+    });
+
+    function signIn(newUser: User) {
+        sessionStorage.setItem("userID", newUser.id);
+        sessionStorage.setItem("userName", newUser.name);
+        sessionStorage.setItem("userRole", newUser.role);
+
+        user.id = newUser.id;
+        user.name = newUser.name;
+        user.role = newUser.role;
     }
 
     function signOut() {
         sessionStorage.removeItem("userID");
-        userID.value = null;
+        sessionStorage.removeItem("userName");
+        sessionStorage.removeItem("userRole");
+
+        user.id = "0";
+        user.name = "Guest";
+        user.role = Role.None;
     }
 
-    const isSignedIn = computed(() => userID.value !== null);
+    const isSignedIn = computed(() => user.role !== Role.None);
 
-    return { userID, signOut, setUserID, isSignedIn };
+    return { user, signOut, signIn, isSignedIn };
 });

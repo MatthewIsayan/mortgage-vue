@@ -63,6 +63,61 @@
                         placeholder="Select a Mortgage Term"
                     ></Dropdown>
                 </div>
+                <div class="label-input">
+                    <BaseLabel>Occupancy Type</BaseLabel>
+                    <Dropdown
+                        v-model="formData.occupancyType"
+                        :options="[
+                            {
+                                name: 'Primary Residence',
+                                value: 'PrimaryResidence',
+                            },
+                            { name: 'Second Home', value: 'SecondHome' },
+                            {
+                                name: 'Investment or Rental Property',
+                                value: 'InvestmentOrRental',
+                            },
+                            {
+                                name: 'Rental Property',
+                                value: 'InvestmentProperty',
+                            },
+                        ]"
+                        optionLabel="name"
+                        optionValue="value"
+                        placeholder="Select an Occupancy Type"
+                    ></Dropdown>
+                </div>
+                <div class="label-input">
+                    <BaseLabel> Lock Period </BaseLabel>
+                    <Dropdown
+                        v-model="formData.lockPeriod"
+                        :options="[
+                            { name: '30 Days', value: '30' },
+                            { name: '45 Days', value: '45' },
+                            { name: '60 Days', value: '60' },
+                            { name: '90 Days', value: '90' },
+                        ]"
+                        optionLabel="name"
+                        optionValue="value"
+                        placeholder="Select a Lock Period"
+                    ></Dropdown>
+                </div>
+                <div class="label-input">
+                    <BaseLabel> Loan Type </BaseLabel>
+                    <Dropdown
+                        v-model="formData.loanType"
+                        :options="[
+                            { name: 'Conventional', value: 'Conventional' },
+                            { name: 'FHA', value: 'FHA' },
+                            { name: 'VA', value: 'VA' },
+                            { name: 'USDA', value: 'USDA' },
+                        ]"
+                        optionLabel="name"
+                        optionValue="value"
+                        placeholder="Select a Loan Type"
+                    ></Dropdown>
+                </div>
+                <div></div>
                 <div class="card flex justify-content-center">
                     <Button
                         type="submit"
@@ -88,7 +143,11 @@
                 />
             </div>
         </div> -->
-        <div v-show="responseData.length !== 0" class="table-container">
+        <div
+            v-show="responseData.length !== 0"
+            class="table-container"
+            id="quote-results"
+        >
             <div class="table-header">
                 <h1>Quotes</h1>
                 <Button
@@ -127,6 +186,9 @@ const formData = reactive({
     amortTermMonths: 360,
     amortTermMonthsList: "360",
     amortType: "Fixed",
+    occupancyType: "PrimaryResidence",
+    lockPeriod: "30",
+    loanType: "Conventional",
 });
 const responseData = ref([] as any[]);
 const error = reactive({
@@ -165,6 +227,9 @@ function onSubmit() {
             propertyType: formData.propertyType,
             amortTermMonthsList: formData.amortTermMonths.toString(),
             amortType: formData.amortType,
+            occType: formData.occupancyType,
+            priceLockDays: formData.lockPeriod,
+            loanType: formData.loanType,
         }),
     })
         .then((response) => {

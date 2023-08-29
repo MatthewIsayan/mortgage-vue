@@ -16,7 +16,12 @@ router.beforeEach(async (to, from) => {
     if (!authStore.isSignedIn && to.name !== "Login") {
         return { name: "Login" };
     }
+
     const userRole = authStore.user.role;
+
+    if (authStore.isSignedIn && to.name === "Login") {
+        authStore.signOut();
+    }
     if (to.name === "LoanOfficerDashboard" && userRole === "Borrower") {
         return { name: "BorrowerDashboard" };
     }

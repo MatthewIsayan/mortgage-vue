@@ -3,13 +3,18 @@
     <p style="color: var(--text-color-secondary)">
         Select a row for more details
     </p>
-    <div class="table-container">
+    <div class="table-container" v-if="scenarios.length > 0">
         <ScenarioTable :scenarios="scenarios" />
     </div>
+    <template v-else>
+        <ProgressSpinner />
+    </template>
 </template>
 
 <script setup lang="ts">
 import ScenarioTable from "@/components/ScenarioTable.vue";
+import ProgressSpinner from "primevue/progressspinner";
+
 import { onMounted, reactive } from "vue";
 
 const scenarios = reactive([] as any[]);

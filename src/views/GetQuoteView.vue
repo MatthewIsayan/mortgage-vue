@@ -144,9 +144,9 @@
             </div>
         </div> -->
         <div
-            v-show="responseData.length !== 0"
+            v-if="responseData.length !== 0"
             class="table-container"
-            id="quote-results"
+            ref="quoteResultsContainer"
         >
             <div class="table-header">
                 <h1>Quotes</h1>
@@ -165,7 +165,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import * as MockResponse from "@/mock-data/QuoteResponse.json";
 import QuoteResultTable from "@/components/QuoteResultTable.vue";
 import { useDialog } from "primevue/usedialog";
@@ -237,6 +237,9 @@ function onSubmit() {
         })
         .then((data: any) => {
             responseData.value = data.rateSummaryList;
+            setTimeout(() => {
+                scrollToQuoteResults();
+            }, 100);
         })
         .catch((error) => {
             console.log(error);
@@ -245,6 +248,16 @@ function onSubmit() {
         .finally(() => {
             loading.value = false;
         });
+}
+
+const quoteResultsContainer = ref(null);
+
+function scrollToQuoteResults() {
+    if (!quoteResultsContainer.value) return;
+    (quoteResultsContainer.value as HTMLDivElement).scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+    });
 }
 
 function openModal() {

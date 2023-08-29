@@ -1,56 +1,13 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
 import { Permission, hasPermission } from "@/utils/Auth";
+import BorrowerRoutes from "./BorrowerRoutes";
+import SharedRoutes from "./SharedRoutes";
+import LoanOfficerRoutes from "./LoanOfficerRoutes";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
-    routes: [
-        {
-            path: "/get-quote",
-            name: "GetQuote",
-            component: () => import("../views/GetQuoteView.vue"),
-            meta: {
-                label: "Get Quote", // This is the label for the navigation menu
-                requiredPermission: Permission.ViewGetQuote,
-            },
-        },
-        {
-            path: "/dashboard",
-            name: "LoanOfficerDashboard",
-            component: () => import("../views/LoanOfficerDashboardView.vue"),
-            meta: {
-                label: "Dashboard", // This is the label for the navigation menu
-                requiredPermission: Permission.ViewLoanOfficerDashboard,
-            },
-        },
-        {
-            path: "/dashboard",
-            name: "BorrowerDashboard",
-            component: () => import("../views/BorrowerDashboardView.vue"),
-            meta: {
-                label: "Dashboard", // This is the label for the navigation menu
-                requiredPermission: Permission.ViewBorrowerDashboard,
-            },
-        },
-        {
-            path: "/scenario/:id",
-            name: "Scenario",
-            component: () => import("../views/ScenarioView.vue"),
-            meta: {
-                requiredPermission: Permission.ViewScenario,
-            },
-        },
-        {
-            path: "/",
-            name: "Login",
-            component: () => import("../views/LoginView.vue"),
-        },
-        {
-            path: "/unauthorized",
-            name: "Unauthorized",
-            component: () => import("../views/UnauthorizedView.vue"),
-        },
-    ],
+    routes: [...SharedRoutes, ...LoanOfficerRoutes, ...BorrowerRoutes],
 });
 
 router.beforeEach(async (to, from) => {
